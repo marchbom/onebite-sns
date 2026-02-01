@@ -1,7 +1,3 @@
 export default function ForgetPasswordPage() {
-  return (
-    <>
-      <h1>ForgetPasswordPage Component</h1>
-    </>
-  );
+  return <h1>ForgetPasswordPage Component</h1>;
 }
