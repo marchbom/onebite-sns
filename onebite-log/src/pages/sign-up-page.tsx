@@ -47,7 +47,7 @@ export default function SignUpPage() {
       </div>
       <div>
         <Button
-          className="w-full"
+          className="w-full cursor-pointer"
           disabled={isSignUpPending}
           onClick={handleSignup}
         >
