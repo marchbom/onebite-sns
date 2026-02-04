@@ -1,5 +1,6 @@
 import { deleteTodo } from "@/api/delete-todo";
 import { QUERY_KEYS } from "@/lib/constants";
+import type { Todo } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useDeleteTodoMutation() {
@@ -7,11 +8,15 @@ export function useDeleteTodoMutation() {
 
   return useMutation({
     mutationFn: deleteTodo,
-
     onSuccess: (deleteTodo) => {
       queryClient.removeQueries({
         queryKey: QUERY_KEYS.todo.detail(deleteTodo.id),
       });
+
+      // queryClient.setQueryData<Todo[]>(QUERY_KEYS.todo.list, (prevTodos) => {
+      //   if (!prevTodos) return [];
+      //   return prevTodos.filter((prevTodo) => prevTodo.id !== deleteTodo.id);
+      // });
 
       queryClient.setQueryData<string[]>(
         QUERY_KEYS.todo.list,

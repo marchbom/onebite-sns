@@ -10,7 +10,7 @@ export function useCreateTodoMutation() {
     onMutate: () => {},
     onSettled: () => {},
     onSuccess: (newTodo) => {
-      // // 새로운 데이터가 추가되면 todos 무효화하여 새로 fetch를 진행하도록 함
+      // 새로운 데이터가 추가되면 todos 무효화하여 새로 fetch를 진행하도록 함
       // queryClient.invalidateQueries({
       //   queryKey: QUERY_KEYS.todo.list,
       // });

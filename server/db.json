@@ -1,23 +1,8 @@
 {
   "todos": [
     {
-      "id": "1",
-      "content": "Todo 1",
-      "isDone": true
-    },
-    {
-      "id": "5921",
-      "content": "123123",
-      "isDone": false
-    },
-    {
-      "id": "3d5f",
-      "content": "werwer",
-      "isDone": false
-    },
-    {
-      "id": "6f7c",
-      "content": "3344",
+      "id": "0b4f",
+      "content": "추가하기",
       "isDone": false
     }
   ]
