@@ -9,3 +9,5 @@ export type UseMutationCallback = {
   onMutate?: () => void;
   onSettled?: () => void;
 };
+
+export type Post = PostEntity & { author: ProfileEntity };

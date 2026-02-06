@@ -2,6 +2,18 @@ import supabase from "@/lib/supabase";
 import { uploadImage } from "./image";
 import type { PostEntity } from "@/type";
 
+// post 조회
+export async function fetchPosts() {
+  const { data, error } = await supabase
+    .from("post")
+    .select("*, author: profile!author_id (*)")
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return data;
+}
+
+// post 생성
 export async function createPost(content: string) {
   const { data, error } = await supabase
     .from("post")

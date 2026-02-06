@@ -7,6 +7,7 @@ import { useCreatePost } from "@/hooks/mutations/post/use-create-post";
 import { toast } from "sonner";
 import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 import { useSession } from "@/store/session";
+import { useOpenAlertModal } from "@/store/alert-modal";
 
 type Image = {
   file: File;
@@ -15,6 +16,7 @@ type Image = {
 
 export default function PostEditorModal() {
   const session = useSession();
+  const openAlertModal = useOpenAlertModal();
   const [content, setContent] = useState("");
   const [images, setImages] = useState<Image[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -32,7 +34,40 @@ export default function PostEditorModal() {
   });
 
   const { isOpen, close } = usePostEditorModal();
+
+  // 입력값 개행에 따라 모달 창의 길이가 길어지도록 설정
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height =
+        textareaRef.current.scrollHeight + "px";
+    }
+  }, [content]);
+
+  // 모달창이 열렸을 때 textarea에 바로 focus가 가도록 설정
+  useEffect(() => {
+    if (!isOpen) {
+      images.forEach((image) => {
+        URL.revokeObjectURL(image.previewUrl);
+      });
+      return;
+    }
+    textareaRef.current?.focus();
+    setContent("");
+    setImages([]);
+  }, [isOpen]);
+
   const handleCloseModal = () => {
+    if (content !== "" || images.length !== 0) {
+      openAlertModal({
+        title: "게시글 작성이 마무리되지 않았습니다.",
+        description: "이 화면에서 나가면 작성 중이던 내용이 사라집니다.",
+        onPositive: () => {
+          close();
+        },
+      });
+      return;
+    }
     close();
   };
 
@@ -65,24 +100,9 @@ export default function PostEditorModal() {
     setImages((prevImages) =>
       prevImages.filter((item) => item.previewUrl !== image.previewUrl),
     );
+
+    URL.revokeObjectURL(image.previewUrl);
   };
-
-  // 입력값 개행에 따라 모달 창의 길이가 길어지도록 설정
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height =
-        textareaRef.current.scrollHeight + "px";
-    }
-  }, [content]);
-
-  // 모달창이 열렸을 때 textarea에 바로 focus가 가도록 설정
-  useEffect(() => {
-    if (!isOpen) return;
-    textareaRef.current?.focus();
-    setContent("");
-    setImages([]);
-  }, [isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCloseModal}>
