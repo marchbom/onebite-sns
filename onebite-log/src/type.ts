@@ -10,4 +10,4 @@ export type UseMutationCallback = {
   onSettled?: () => void;
 };
 
-export type Post = PostEntity & { author: ProfileEntity };
+export type Post = PostEntity & { author: ProfileEntity; isLiked: boolean };
